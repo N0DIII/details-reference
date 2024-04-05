@@ -1,0 +1,50 @@
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/Roboto-Regular.ttf")
+}
+
+* {
+    font-family: 'Roboto';
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+}
+  
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    border: none;
+}
+
+button, button:focus, input, input:focus {
+    border: none;
+    outline: none;
+}
+
+.App {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(40deg, #5852cf, #7e56cf);
+    overflow: hidden;
+}
+
+.page {
+    position: relative;
+    width: 100%;
+}

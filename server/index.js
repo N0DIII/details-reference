@@ -158,10 +158,15 @@ app.post('/getDetails', async (req, res) => {
 app.post('/getDetail', async (req, res) => {
     const { id } = req.body;
 
-    const detail = await Detail.findOne({ _id: id });
-    if(detail != null) await Detail.updateOne({ _id: id }, { $set: { view: detail.view + 1 } });
+    try {
+        const detail = await Detail.findOne({ _id: id });
+        if(detail != null) await Detail.updateOne({ _id: id }, { $set: { view: detail.view + 1 } });
 
-    res.json(detail);
+        res.json(detail);
+    }
+    catch(e) {
+        res.json(null);
+    }
 })
 
 app.post('/deleteDetail', async (req, res) => {
