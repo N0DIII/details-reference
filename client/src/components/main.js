@@ -62,7 +62,6 @@ export default function Main(props) {
     function editDetail(id) {
         setEdit(true);
         setOldDetail(details.filter(detail => detail._id == id)[0]);
-        console.log(details.filter(detail => detail._id == id)[0])
     }
 
     return(

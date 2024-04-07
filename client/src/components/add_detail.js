@@ -26,6 +26,7 @@ export default function AddDetail(props) {
     useEffect(() => {
         if(oldDetail != null) {
             setTitle(oldDetail.title);
+            setSelectCategories(oldDetail.categories);
         }
     }, [oldDetail])
 
@@ -39,18 +40,15 @@ export default function AddDetail(props) {
         try {
             const savedData = await editorCore.current.save();
             
-            const categories = [];
-            for(let i = 0; i < selectCategories.length; i++) categories.push(selectCategories[i].value);
-            
             if(!edit) {
-                server('/addDetail', { title, savedData, categories, admin })
+                server('/addDetail', { title, savedData, categories: selectCategories, admin })
                 .then(result => {
                     if(!result.error) navigate(`/detail/${result.id}`);
                     else setError(result.message);
                 })
             }
             else {
-                server('/editDetail', { title, savedData, categories, admin, id: oldDetail._id })
+                server('/editDetail', { title, savedData, categories: selectCategories, admin, id: oldDetail._id })
                 .then(result => {
                     if(!result.error) navigate(`/detail/${result.id}`);
                     else setError(result.message);
@@ -62,6 +60,12 @@ export default function AddDetail(props) {
         }
     }, [title, selectCategories])
 
+    function handleChange(e) {
+        const options = [...e.target.selectedOptions];
+        const values = options.map(option => option.value);
+        setSelectCategories(values);
+    }
+
     return(
         <div className='addDetail'>
             <div className='addDetail_form'>
@@ -71,8 +75,13 @@ export default function AddDetail(props) {
                 <input type='text' value={title} onChange={e => setTitle(e.target.value)}/>
 
                 <div className='addDetail_label'>Категории:</div>
-                <select className='addDetail_select' multiple onChange={e => setSelectCategories(e.target.selectedOptions)}>
-                    {categories.map((category, i) => <option key={i} className='addDetail_option' value={category._id}>{category._id}</option>)}
+                <select className='addDetail_select' multiple value={selectCategories} onChange={handleChange}>
+                    {categories.map((category, i) => {
+                        const selected = oldDetail.categories.includes(category) ? true : false;
+                        return(
+                            <option key={i} className='addDetail_option' value={category._id}>{category._id}</option>
+                        )
+                    })}
                 </select>
 
                 <div className='addDetail_label'>Описание:</div>
