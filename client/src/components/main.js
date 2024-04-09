@@ -13,7 +13,7 @@ export default function Main(props) {
     const { userData } = props;
 
     const [search, setSearch] = useState('');
-    const [count, setCount] = useState('');
+    const [count, setCount] = useState(0);
     const [showLogin, setShowLogin] = useState(false);
     const [showReg, setShowReg] = useState(false);
     const [loginText, setLoginText] = useState(['', 'Войти']);
@@ -35,12 +35,22 @@ export default function Main(props) {
 
     useEffect(() => {
         server('/getCategories').then(result => setCategories(result));
-
     }, [])
 
     useEffect(() => {
-        server('/getDetails', { search, count, selectedCategories }).then(result => setDetails(result));
+        getItems();
     }, [search, selectedCategories])
+
+    function getItems() {
+        server('/getDetails', { search, count, selectedCategories })
+        .then(result => {         
+            if(result.length != 0) {
+                setCount(count + 1);
+                if(count == 0) setDetails(result);
+                else setDetails([...details, ...result]);
+            }
+        })
+    }
 
     function login() {
         if(userData.name) {
@@ -50,6 +60,11 @@ export default function Main(props) {
         else {
             setShowLogin(true)
         }
+    }
+
+    function searchChange(e) {
+        setSearch(e.target.value);
+        setCount(0);
     }
 
     function deleteDetail(id) {
@@ -64,11 +79,36 @@ export default function Main(props) {
         setOldDetail(details.filter(detail => detail._id == id)[0]);
     }
 
+    function scroll(e) {
+        const scrollTop = e.target.scrollTop;
+        const clientHeight = e.target.clientHeight;
+        const scrollHeight = e.target.scrollHeight;
+        const dif = scrollHeight / 4;
+
+        if(scrollTop + clientHeight >= scrollHeight - dif) {
+            getItems();
+        }
+    }
+
+    function throttle(callee, timeout) {
+        let timer = null;
+      
+        return function perform(...args) {
+            if (timer) return;
+        
+            timer = setTimeout(() => {
+                callee(...args);
+                clearTimeout(timer);
+                timer = null;
+            }, timeout)
+        }
+    }
+
     return(
-        <div className='main_wrapper'>
+        <div className='main_wrapper' onScroll={throttle(scroll, 250)} onResize={throttle(scroll, 250)}>
             <div className='header'>
                 <div className='header_logo'>Онлайн-справочник</div>
-                <input className='header_search' type='text' placeholder='Поиск...' value={search} onChange={e => {setSearch(e.target.value); setCount(0)}}/>
+                <input className='header_search' type='text' placeholder='Поиск...' value={search} onChange={searchChange}/>
                 <div className='header_login_wrapper'>
                     <div className='header_name'>{loginText[0]}</div>
                     {userData.name && <button className='main_button header_reg' onClick={() => setShowReg(!showReg)}>Добавить администратора</button>}

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const multer  = require('multer');
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 const Admin = require('./models/Admin');
 const Category = require('./models/Category');
@@ -45,7 +45,7 @@ const generateAccessToken = (id) => {
     return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '30d' });
 }
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(__dirname + '/build/index.html');
 })
 
@@ -136,7 +136,7 @@ app.post('/getDetails', async (req, res) => {
 
     let details = [];
     if(selectedCategories.length == 0) details = await Detail.find({ title: { $regex: search } }).skip(count * 15).limit(15);
-    else details = await Detail.find({ title: { $regex: search }, categories: { $all: selectedCategories } }).skip(count * 15).limit(15);
+    else details = await Detail.find({ title: { $regex: search }, categories: { $in: selectedCategories } }).skip(count * 15).limit(15);
 
     for(let i = 0; i < details.length; i++) {
         let cover = '';

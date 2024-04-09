@@ -57,7 +57,7 @@ export default function Detail() {
 
                 <div className='detail_title'>{detail.title}</div>
                 <div className='detail_categories'>
-                    <div className='detail_category'>Категории:</div>
+                    {detail.categories.length != 0 && <div className='detail_category'>Категории:</div>}
                     {detail.categories.map((category, i) => <div key={i} className='detail_category'>{category}{i < detail.categories.length - 1 ? ', ' : ''}</div>)}
                 </div>
                 <div className='detail_description'>

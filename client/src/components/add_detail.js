@@ -76,12 +76,7 @@ export default function AddDetail(props) {
 
                 <div className='addDetail_label'>Категории:</div>
                 <select className='addDetail_select' multiple value={selectCategories} onChange={handleChange}>
-                    {categories.map((category, i) => {
-                        const selected = oldDetail.categories.includes(category) ? true : false;
-                        return(
-                            <option key={i} className='addDetail_option' value={category._id}>{category._id}</option>
-                        )
-                    })}
+                    {categories.map((category, i) =>  <option key={i} className='addDetail_option' value={category._id}>{category._id}</option>)}
                 </select>
 
                 <div className='addDetail_label'>Описание:</div>
