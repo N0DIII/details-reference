@@ -1,7 +1,7 @@
-const { Schema, model, ObjectId } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const Category = new Schema({
-    _id: {type: String}
+    _id: String
 })
 
 module.exports = model('Category', Category);

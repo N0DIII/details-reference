@@ -2,7 +2,7 @@
     position: relative;
     width: 100vw;
     height: 100vh;
-    padding: 100px;
+    padding: 100px 400px 100px 100px;
     overflow-y: scroll;
     color: white;
 }
@@ -13,7 +13,7 @@
 }
 
 .detail_description {
-    width: 100%;
+    width: 90%;
 }
 
 .detail_description_block {
@@ -69,7 +69,6 @@
 }
 
 .detail_button {
-    position: absolute;
     z-index: 2000;
     padding: 5px 10px;
     background: #4CAF50;
@@ -83,7 +82,9 @@
 }
 
 .detail_back {
+    position: absolute;
     top: 30px;
+    left: 100px;
 }
 
 .nopage_button {
@@ -100,6 +101,46 @@
     padding-right: 8px;
 }
 
+.detail_order {
+    position: absolute;
+    top: 135px;
+    right: 100px;
+    display: grid;
+    gap: 10px;
+}
+
+.detail_order_count {
+    margin: 10px 0;
+}
+
+.noAuth {
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail_order_busketCount {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 28px;
+}
+
+.detail_order_busketCount > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.detail_order_busketCount > div:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 @media(max-width: 800px) {
     .detail_wrapper {
         padding: 100px 10px;
@@ -107,5 +148,13 @@
 
     .detail_data {
         right: 10px;
+    }
+
+    .detail_button {
+        left: 20px;
+    }
+
+    .detail_order {
+        position: static;
     }
 }

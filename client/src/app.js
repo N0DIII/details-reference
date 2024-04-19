@@ -7,6 +7,8 @@ require('./styles/index.css');
 
 const Main = require('./components/main').default;
 const Detail = require('./components/detail').default;
+const Busket = require('./components/busket').default;
+const Orders = require('./components/orders').default;
 
 export default function App() {
     const [userData, setUserData] = useState(false);
@@ -27,7 +29,9 @@ export default function App() {
             <div className='App'>
                 <Routes>
                     <Route path='/' element={<Main userData={userData}/>}/>
-                    <Route path='/detail/:id' element={<Detail/>}/>
+                    <Route path='/detail/:id' element={<Detail userData={userData}/>}/>
+                    <Route path='/busket' element={<Busket userData={userData}/>}/>
+                    <Route path='/orders' element={<Orders userData={userData}/>}/>
                 </Routes>
             </div>
         </BrowserRouter>

@@ -15,6 +15,7 @@ export default function AddDetail(props) {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
+    const [count, setCount] = useState(1);
     const [categories, setCategories] = useState([]);
     const [selectCategories, setSelectCategories] = useState([]);
     const [error, setError] = useState('');
@@ -27,6 +28,7 @@ export default function AddDetail(props) {
         if(oldDetail != null) {
             setTitle(oldDetail.title);
             setSelectCategories(oldDetail.categories);
+            setCount(oldDetail.count);
         }
     }, [oldDetail])
 
@@ -41,14 +43,14 @@ export default function AddDetail(props) {
             const savedData = await editorCore.current.save();
             
             if(!edit) {
-                server('/addDetail', { title, savedData, categories: selectCategories, admin })
+                server('/addDetail', { title, count, savedData, categories: selectCategories, admin })
                 .then(result => {
                     if(!result.error) navigate(`/detail/${result.id}`);
                     else setError(result.message);
                 })
             }
             else {
-                server('/editDetail', { title, savedData, categories: selectCategories, admin, id: oldDetail._id })
+                server('/editDetail', { title, count, savedData, categories: selectCategories, id: oldDetail._id })
                 .then(result => {
                     if(!result.error) navigate(`/detail/${result.id}`);
                     else setError(result.message);
@@ -58,7 +60,7 @@ export default function AddDetail(props) {
         catch {
             setError('Описание не может быть пустым');
         }
-    }, [title, selectCategories])
+    }, [title, selectCategories, count])
 
     function handleChange(e) {
         const options = [...e.target.selectedOptions];
@@ -73,6 +75,9 @@ export default function AddDetail(props) {
 
                 <div className='addDetail_label'>Название:</div>
                 <input type='text' value={title} onChange={e => setTitle(e.target.value)}/>
+
+                <div className='addDetail_label'>Количество:</div>
+                <input type='number' value={count} onChange={e => setCount(e.target.value)}/>
 
                 <div className='addDetail_label'>Категории:</div>
                 <select className='addDetail_select' multiple value={selectCategories} onChange={handleChange}>

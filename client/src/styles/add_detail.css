@@ -19,7 +19,8 @@
     margin: 100px 0;
     background: white;
     border-radius: 5px;
-    padding: 50px;
+    padding: 50px 0;
+    justify-items: center;
 }
 
 .addDetail_close {
@@ -38,16 +39,19 @@
 .addDetail_editor {
     border: 2px solid #D3D3D3;
     border-radius: 5px;
+    padding: 0 20px;
+    width: calc(100% - 100px);
 }
 
 .addDetail_label {
     padding: 40px 0 10px 0;
+    width: calc(100% - 100px);
 }
 
 .addDetail_form > input {
     border: 2px solid #D3D3D3;
     border-radius: 5px;
-    width: 100%;
+    width: calc(100% - 100px);
     padding: 10px;
 }
 
@@ -76,6 +80,7 @@
 .addDetail_select {
     border: 2px solid #D3D3D3;
     border-radius: 5px;
+    width: calc(100% - 100px);
 }
 
 .addDetail_select:focus {

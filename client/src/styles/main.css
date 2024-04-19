@@ -33,6 +33,7 @@
 .header_login_wrapper {
     display: flex;
     align-items: center;
+    height: inherit;
 }
 
 .header_name {
@@ -47,9 +48,19 @@
     border-radius: 5px;
 }
 
+.main_buttonImg {
+    height: 50%;
+    padding: 0 10px;
+}
+
 .main_button:hover {
     background: #3E8E41;
     cursor: pointer;
+}
+
+.main_buttonImg:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 .main_wrapper {
@@ -89,6 +100,11 @@
     right: 20px;
 }
 
+.orders {
+    position: absolute;
+    right: 10px;
+}
+
 @media(max-width: 800px) {
     .header_reg {
         display: none;
@@ -126,5 +142,18 @@
         padding: 230px 10px 10px 10px;
         height: 100vh;
         margin: 0;
+    }
+
+    .header_name {
+        display: none;
+    }
+
+    .main_button {
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .main_buttonImg {
+        padding: 0 5px;
     }
 }

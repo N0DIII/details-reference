@@ -1,21 +1,20 @@
-const { useState, useEffect } = require('react');
+const { useState, useEffect, useCallback } = require('react');
+const { useNavigate } = require('react-router-dom');
 const { server } = require('../server');
 
 require('../styles/main.css');
 
 const Login = require('./login').default;
-const Registration = require('./registration').default;
 const Dropmenu = require('./dropmenu').default;
 const AddDetail = require('./add_detail').default;
 const Detailslist = require('./detailslist').default;
 
 export default function Main(props) {
     const { userData } = props;
+    const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
-    const [count, setCount] = useState(0);
     const [showLogin, setShowLogin] = useState(false);
-    const [showReg, setShowReg] = useState(false);
     const [loginText, setLoginText] = useState(['', 'Войти']);
     const [showAddDetail, setShowAddDetail] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -26,11 +25,15 @@ export default function Main(props) {
 
     const [details, setDetails] = useState(null);
 
+    const [count, setCount] = useState(0);
+    const [maxCount, setMaxCount] = useState(1);
+    const [fetching, setFetching] = useState(true);
+
     useEffect(() => {
         if(!userData) return;
         if(!userData.auth) return;
 
-        setLoginText([userData.name, 'Выйти']);
+        setLoginText([userData.login, 'Выйти']);
     }, [userData])
 
     useEffect(() => {
@@ -38,33 +41,40 @@ export default function Main(props) {
     }, [])
 
     useEffect(() => {
-        getItems();
+        setCount(0);
+        setMaxCount(1);
+        setFetching(true);
     }, [search, selectedCategories])
 
-    function getItems() {
-        server('/getDetails', { search, count, selectedCategories })
-        .then(result => {         
-            if(result.length != 0) {
-                setCount(count + 1);
-                if(count == 0) setDetails(result);
-                else setDetails([...details, ...result]);
-            }
-        })
-    }
+    useEffect(() => {
+        if(fetching) {
+            server('/getDetails', { search, count, selectedCategories })
+            .then(result => {
+                if(count == 0) setDetails(result.details);
+                else setDetails([...details, ...result.details]);
+
+                setCount(prevState => prevState + 1);
+                setMaxCount(result.maxCount);
+            })
+
+            setFetching(false);
+        }
+    }, [fetching])
+
+    const scroll = useCallback((e) => {
+        if(e.target.scrollHeight - (Math.abs(e.target.scrollTop) + window.innerHeight) < 100 && details.length < maxCount) {
+            setFetching(true);
+        }
+    }, [maxCount, details])
 
     function login() {
-        if(userData.name) {
+        if(userData.auth) {
             localStorage.removeItem('token');
             window.location.reload();
         }
         else {
             setShowLogin(true)
         }
-    }
-
-    function searchChange(e) {
-        setSearch(e.target.value);
-        setCount(0);
     }
 
     function deleteDetail(id) {
@@ -79,45 +89,20 @@ export default function Main(props) {
         setOldDetail(details.filter(detail => detail._id == id)[0]);
     }
 
-    function scroll(e) {
-        const scrollTop = e.target.scrollTop;
-        const clientHeight = e.target.clientHeight;
-        const scrollHeight = e.target.scrollHeight;
-        const dif = scrollHeight / 4;
-
-        if(scrollTop + clientHeight >= scrollHeight - dif) {
-            getItems();
-        }
-    }
-
-    function throttle(callee, timeout) {
-        let timer = null;
-      
-        return function perform(...args) {
-            if (timer) return;
-        
-            timer = setTimeout(() => {
-                callee(...args);
-                clearTimeout(timer);
-                timer = null;
-            }, timeout)
-        }
-    }
-
     return(
-        <div className='main_wrapper' onScroll={throttle(scroll, 250)} onResize={throttle(scroll, 250)}>
+        <div className='main_wrapper' onScroll={scroll} onResize={scroll}>
             <div className='header'>
-                <div className='header_logo'>Онлайн-справочник</div>
-                <input className='header_search' type='text' placeholder='Поиск...' value={search} onChange={searchChange}/>
+                <div className='header_logo'>Магазин деталей</div>
+                <input className='header_search' type='text' placeholder='Поиск...' value={search} onChange={e => setSearch(e.target.value)}/>
                 <div className='header_login_wrapper'>
                     <div className='header_name'>{loginText[0]}</div>
-                    {userData.name && <button className='main_button header_reg' onClick={() => setShowReg(!showReg)}>Добавить администратора</button>}
+                    {userData.auth && <img className='main_buttonImg' src='/src/busket.png' onClick={() => navigate('/busket')}/>}
+                    {userData.auth && <img className='main_buttonImg' src='/src/packet.png' onClick={() => navigate('/orders')}/>}
                     <button className='main_button' onClick={login}>{loginText[1]}</button>
                 </div>
             </div>
 
             {showLogin && <Login setShow={setShowLogin}/>}
-            {showReg && <Registration setShow={setShowReg}/>}
 
             <div className='navigation'>
                 <Dropmenu items={categories} title='Категории' selected={selectedCategories} setSelected={setSelectedCategories}/>
@@ -128,7 +113,7 @@ export default function Main(props) {
                         </div>
                     )}
                 </div>
-                {userData.name && <button className='main_button add_detail' onClick={() => setShowAddDetail(!showAddDetail)}>Добавить деталь</button>}
+                {userData.admin && <button className='main_button add_detail' onClick={() => setShowAddDetail(!showAddDetail)}>Добавить деталь</button>}
             </div>
 
             {showAddDetail && <AddDetail setShow={setShowAddDetail} admin={userData._id}/>}
@@ -136,7 +121,7 @@ export default function Main(props) {
 
             <Detailslist
                 items={details}
-                admin={userData?.name != undefined ? true : false}
+                admin={userData?.admin}
                 deleteDetail={deleteDetail}
                 editDetail={editDetail}
             />

@@ -1,9 +1,9 @@
 .itemlist_wrapper {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, 400px);
+    grid-template-columns: repeat(auto-fit, 350px);
     justify-content: center;
-    gap: 40px;
+    gap: 20px;
     padding: 40px;
     z-index: 999;
 }

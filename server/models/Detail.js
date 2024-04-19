@@ -1,11 +1,12 @@
-const { Schema, model, ObjectId } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const Detail = new Schema({
-    title: {type: String},
-    categories: [{type: String}],
-    description: {type: Object},
-    view: {type: Number},
-    admin: {type: ObjectId}
+    title: String,
+    categories: [String],
+    description: Object,
+    view: Number,
+    count: Number,
+    admin: Schema.Types.ObjectId
 })
 
 module.exports = model('Detail', Detail);
