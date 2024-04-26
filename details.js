@@ -26,7 +26,7 @@ const storageConfig = multer.diskStorage({
 
 app.use(cors({origin: '*'}));
 app.use(express.static('public'));
-app.use(express.static('client/build'));
+app.use(express.static('./client/build'));
 app.use(express.json());
 
 const start = async () => {
@@ -172,8 +172,12 @@ app.post('/getDetail', async (req, res) => {
 app.post('/deleteDetail', async (req, res) => {
     const { id } = req.body;
 
+    const order = await Order.findOne({ 'products._id': id });
+    if(order != null) return res.json({ error: true, message: 'Деталь добавлена в заказы' }); 
+
     const detail = await Detail.findOne({ _id: id });
     await Detail.deleteOne({ _id: id });
+    await User.updateMany({ 'busket.product': id }, { $pull: { busket: { product: id } } });
 
     for(let i = 0; i < detail.description.blocks.length; i++) {
         const block = detail.description.blocks[i];

@@ -80,7 +80,8 @@ export default function Main(props) {
     function deleteDetail(id) {
         server('/deleteDetail', { id })
         .then(result => {
-            if(result) setDetails(details.filter(detail => detail._id != id));
+            if(result.error) alert(result.message);
+            else setDetails(details.filter(detail => detail._id != id));
         })
     }
 
