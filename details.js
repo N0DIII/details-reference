@@ -26,7 +26,7 @@ const storageConfig = multer.diskStorage({
 
 app.use(cors({origin: '*'}));
 app.use(express.static('public'));
-app.use(express.static('build'));
+app.use(express.static('client/build'));
 app.use(express.json());
 
 const start = async () => {
@@ -47,7 +47,7 @@ const generateAccessToken = (id) => {
 }
 
 app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/build/index.html');
+    res.sendFile(__dirname + '/client/build/index.html');
 })
 
 app.post('/auth', async (req, res) => {

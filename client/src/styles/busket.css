@@ -30,7 +30,10 @@
     margin: 30px 0;
 }
 
-.busket_product_wrapper > img {
+.busket_product_cover {
+    display: flex;
+    align-items: center;
+    color: rgb(224, 224, 224);
     height: 80%;
 }
 
@@ -73,10 +76,15 @@
 
     .busket_product_wrapper {
         flex-direction: column;
+        height: max-content;
     }
 
     .busket_product_count {
         position: static;
         margin: 20px 0;
+    }
+
+    .busket_product_cover {
+        height: 200px;
     }
 }

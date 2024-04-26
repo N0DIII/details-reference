@@ -8,7 +8,7 @@ export default function Orders(props) {
     const { userData } = props;
     const navigate = useNavigate();
 
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState(null);
 
     useEffect(() => {
         if(!userData.auth) return;
@@ -29,6 +29,13 @@ export default function Orders(props) {
             <div className='busket_noAuth_wrapper'>
                 <button className='detail_back detail_button' onClick={() => navigate('/')}>На главную</button>
                 <div className='busket_noAuth'>Сначала войдите в аккаунт</div>
+            </div>
+        )
+    }
+    else if(orders == null) {
+        return(
+            <div className='busket_noAuth_wrapper'>
+                <div className='busket_noAuth'>Загрузка...</div>
             </div>
         )
     }

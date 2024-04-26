@@ -8,7 +8,7 @@ export default function Busket(props) {
     const { userData } = props;
     const navigate = useNavigate();
 
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(null);
 
     useEffect(() => {
         if(!userData.auth) return;
@@ -53,6 +53,13 @@ export default function Busket(props) {
             </div>
         )
     }
+    else if(products == null) {
+        return(
+            <div className='busket_noAuth_wrapper'>
+                <div className='busket_noAuth'>Загрузка...</div>
+            </div>
+        )
+    }
     else if(products.length == 0) {
         return(
             <div className='busket_noAuth_wrapper'>
@@ -67,7 +74,8 @@ export default function Busket(props) {
                 <button className='detail_back detail_button' onClick={() => navigate('/')}>На главную</button>
                 {products.map((item, i) =>
                     <div key={i} className='busket_product_wrapper'>
-                        <img src={item.cover}/>
+                        {item.cover != '' && <img className='busket_product_cover' src={item.cover}/>}
+                        {item.cover == '' && <div className='busket_product_cover'>Нет изображения</div>}
                         <div className='busket_product_title'>{item.title}</div>
                         <div className='busket_product_count'>
                             <div onClick={() => minusBusket(item)}>-</div>

@@ -43,6 +43,7 @@ button, button:focus, input, input:focus {
     height: 100vh;
     background: linear-gradient(40deg, #9b9ab0, #4aa3b6);
     overflow: hidden;
+    overflow-y: scroll;
 }
 
 .page {

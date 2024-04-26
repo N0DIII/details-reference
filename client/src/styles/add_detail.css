@@ -11,16 +11,18 @@
 }
 
 .addDetail_form {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    width: 50%;
-    height: max-content;
+    min-width: 50%;
     min-height: 500px;
+    width: max-content;
+    height: max-content;
     margin: 100px 0;
     background: white;
     border-radius: 5px;
-    padding: 50px 0;
-    justify-items: center;
+    padding: 50px;
 }
 
 .addDetail_close {
@@ -40,18 +42,18 @@
     border: 2px solid #D3D3D3;
     border-radius: 5px;
     padding: 0 20px;
-    width: calc(100% - 100px);
+    width: 100%;
 }
 
 .addDetail_label {
     padding: 40px 0 10px 0;
-    width: calc(100% - 100px);
+    width: 100%;
 }
 
 .addDetail_form > input {
     border: 2px solid #D3D3D3;
     border-radius: 5px;
-    width: calc(100% - 100px);
+    width: 100%;
     padding: 10px;
 }
 
@@ -80,7 +82,7 @@
 .addDetail_select {
     border: 2px solid #D3D3D3;
     border-radius: 5px;
-    width: calc(100% - 100px);
+    width: 100%;
 }
 
 .addDetail_select:focus {
@@ -98,6 +100,6 @@
 @media(max-width: 800px) {
     .addDetail_form {
         width: 95%;
-        padding: 50px 10px;
+        padding: 50px 20px;
     }
 }
