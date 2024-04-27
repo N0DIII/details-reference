@@ -8,6 +8,7 @@ const Login = require('./login').default;
 const Dropmenu = require('./dropmenu').default;
 const AddDetail = require('./add_detail').default;
 const Detailslist = require('./detailslist').default;
+const AddAdmin = require('./add_admin').default;
 
 export default function Main(props) {
     const { userData } = props;
@@ -17,6 +18,7 @@ export default function Main(props) {
     const [showLogin, setShowLogin] = useState(false);
     const [loginText, setLoginText] = useState(['', 'Войти']);
     const [showAddDetail, setShowAddDetail] = useState(false);
+    const [showAddAdmin, setShowAddAdmin] = useState(false);
     const [edit, setEdit] = useState(false);
     const [oldDetail, setOldDetail] = useState(null);
 
@@ -97,6 +99,7 @@ export default function Main(props) {
                 <input className='header_search' type='text' placeholder='Поиск...' value={search} onChange={e => setSearch(e.target.value)}/>
                 <div className='header_login_wrapper'>
                     <div className='header_name'>{loginText[0]}</div>
+                    {userData.admin && <img className='main_buttonImg main_addAdmin' src='/src/plus.png' onClick={() => setShowAddAdmin(true)}/>}
                     {userData.auth && <img className='main_buttonImg' src='/src/busket.png' onClick={() => navigate('/busket')}/>}
                     {userData.auth && <img className='main_buttonImg' src='/src/packet.png' onClick={() => navigate('/orders')}/>}
                     <button className='main_button' onClick={login}>{loginText[1]}</button>
@@ -104,6 +107,7 @@ export default function Main(props) {
             </div>
 
             {showLogin && <Login setShow={setShowLogin}/>}
+            {showAddAdmin && <AddAdmin close={() => setShowAddAdmin(false)}/>}
 
             <div className='navigation'>
                 <Dropmenu items={categories} title='Категории' selected={selectedCategories} setSelected={setSelectedCategories}/>

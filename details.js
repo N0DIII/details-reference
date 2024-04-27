@@ -309,3 +309,14 @@ app.post('/changeStatus', async (req, res) => {
 
     res.json(true);
 })
+
+app.post('/addAdmin', async (req, res) => {
+    const { login } = req.body;
+
+    const user = await User.findOne({ login });
+    if(user == null) return res.json({ error: 'Нет пользователя с таким логином' });
+
+    await User.updateOne({ login }, { $set: { admin: true } });
+
+    res.json({ error: false });
+})
