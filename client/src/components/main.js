@@ -99,10 +99,11 @@ export default function Main(props) {
                 <input className='header_search' type='text' placeholder='Поиск...' value={search} onChange={e => setSearch(e.target.value)}/>
                 <div className='header_login_wrapper'>
                     <div className='header_name'>{loginText[0]}</div>
-                    {userData.admin && <img className='main_buttonImg main_addAdmin' src='/src/plus.png' onClick={() => setShowAddAdmin(true)}/>}
-                    {userData.auth && <img className='main_buttonImg' src='/src/busket.png' onClick={() => navigate('/busket')}/>}
-                    {userData.auth && <img className='main_buttonImg' src='/src/packet.png' onClick={() => navigate('/orders')}/>}
-                    <button className='main_button' onClick={login}>{loginText[1]}</button>
+                    {userData.admin && <img className='main_buttonImg main_addAdmin' src='/src/plus.png' onClick={() => setShowAddAdmin(true)} title='Добавить администратора'/>}
+                    {userData.auth && <img className='main_buttonImg' src='/src/busket.png' onClick={() => navigate('/busket')} title='Корзина'/>}
+                    {userData.auth && <img className='main_buttonImg' src='/src/packet.png' onClick={() => navigate('/orders')} title='Заказы'/>}
+                    {loginText[1] == 'Войти' && <button className='main_button' onClick={login}>{loginText[1]}</button>}
+                    {loginText[1] == 'Выйти' && <img className='main_buttonImg' src='/src/signOut.png' onClick={login} title='Выйти'/>}
                 </div>
             </div>
 

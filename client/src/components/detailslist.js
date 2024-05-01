@@ -38,8 +38,8 @@ export default function Detailslist(props) {
                         </Link>
 
                         {admin && admin != undefined && <div className='itemlist_item_admin'>
-                            <img src='src/edit.png' onClick={() => editDetail(item._id)}/>
-                            <img src='src/delete.png' onClick={() => deleteDetail(item._id)}/>
+                            <img src='src/edit.png' onClick={() => editDetail(item._id)} title='Изменить'/>
+                            <img src='src/delete.png' onClick={() => deleteDetail(item._id)} title='Удалить'/>
                         </div>}
                     </div>
                 )}
