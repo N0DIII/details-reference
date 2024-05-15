@@ -46,8 +46,14 @@
     color: white;
 }
 
+.itemlist_item_title {
+    height: 70%;
+    overflow: hidden;
+}
+
 .itemlist_item_categories {
     font-size: 20px;
+    height: 30%;
     padding: 10px 0;
 }
 

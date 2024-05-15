@@ -194,10 +194,18 @@ app.post('/deleteDetail', async (req, res) => {
 app.post('/getBusket', async (req, res) => {
     const { product, user } = req.body;
 
-    const busket = await User.findOne({ _id: user, 'busket.product': product });
+    const busket = await User.findOne({ _id: user, 'busket.product':  product }, { busket: 1 });
     if(busket == null) return res.json(0);
+
+    let count = 0;
+    for(let i = 0; i < busket.busket.length; i++) {
+        if(busket.busket[i].product == product) {
+            count = busket.busket[i].count;
+            break;
+        }
+    }
     
-    res.json(busket.busket[0].count);
+    res.json(count);
 })
 
 app.post('/addProduct', async (req, res) => {

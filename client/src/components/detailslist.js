@@ -28,7 +28,7 @@ export default function Detailslist(props) {
                             {item.cover != '' && <img className='itemlist_item_cover' src={item.cover}/>}
                             {item.cover == '' && <div className='itemlist_item_cover'>Нет изображения</div>}
                             <div className='itemlist_item_description'>
-                                {item.title}
+                                <div className='itemlist_item_title'>{item.title}</div>
                                 {item.categories.length != 0 && 
                                 <div className='itemlist_item_categories'>
                                     Категории: 

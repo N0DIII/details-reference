@@ -23,7 +23,7 @@ export default function Detail(props) {
     }, [])
 
     useEffect(() => {
-        if(userData.auth) server('/getBusket', { product: id, user: userData._id }).then(result => setCount(result));
+        if(userData.auth) server('/getBusket', { product: id, user: userData._id }).then(result => {console.log(result);setCount(result)});
     }, [userData])
 
     function getDate(time) {
