@@ -9,6 +9,7 @@ export default function Busket(props) {
     const navigate = useNavigate();
 
     const [products, setProducts] = useState(null);
+    const [stop, setStop] = useState(false);
 
     useEffect(() => {
         if(!userData.auth) return;
@@ -17,23 +18,42 @@ export default function Busket(props) {
     }, [userData])
 
     function plusBusket(item) {
-        if(item.allCount <= 0) return;
+        if(item.allCount <= 0 || stop) return;
+        setStop(true);
 
         server('/addProduct', { product: item._id, user: userData._id, count: item.count + 1, stat: -1 })
-        .then(result => server('/getProducts', { user: userData._id }).then(result => setProducts(result)))
+        .then(result => {
+            setProducts(prevState => prevState.map(prod => {
+                if(prod._id == item._id) return { ...prod, count: prod.count + 1 };
+                else return prod;
+            }))
+            setStop(false);
+        })
     }
 
     function minusBusket(item) {
+        if(stop) return;
+        setStop(true);
+
         if(item.count - 1 == 0) deleteBusket(item);
         else {
             server('/addProduct', { product: item._id, user: userData._id, count: item.count - 1, stat: 1 })
-            .then(result => server('/getProducts', { user: userData._id }).then(result => setProducts(result)))
+            .then(result => {
+                setProducts(prevState => prevState.map(prod => {
+                    if(prod._id == item._id) return { ...prod, count: prod.count - 1 };
+                    else return prod;
+                }))
+                setStop(false);
+            })
         }
     }
 
     function deleteBusket(item) {
         server('/deleteProduct', { product: item._id, user: userData._id })
-        .then(result => server('/getProducts', { user: userData._id }).then(result => setProducts(result)))
+        .then(result => {
+            setProducts(prevState => prevState.filter(prod => prod._id != item._id));
+            setStop(false);
+        })
     }
 
     function addOrder() {
